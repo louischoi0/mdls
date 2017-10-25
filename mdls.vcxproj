@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{DA0270B7-7496-47ED-93E1-43B15B094E4B}</ProjectGuid>
+    <RootNamespace>mdls</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="affine.cpp" />
+    <ClCompile Include="batch_norm.cpp" />
+    <ClCompile Include="convolution.cpp" />
+    <ClCompile Include="counter.cpp" />
+    <ClCompile Include="cube.cpp" />
+    <ClCompile Include="cross_entropycpp.cpp" />
+    <ClCompile Include="cube_func.cpp" />
+    <ClCompile Include="cube_loop.cpp" />
+    <ClCompile Include="element.cpp" />
+    <ClCompile Include="func_informer.cpp" />
+    <ClCompile Include="grad.cpp" />
+    <ClCompile Include="indexercpp.cpp" />
+    <ClCompile Include="layert.cpp" />
+    <ClCompile Include="loop_callback.cpp" />
+    <ClCompile Include="loop_func.cpp" />
+    <ClCompile Include="maincpp.cpp" />
+    <ClCompile Include="math_macro.cpp" />
+    <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="matrix_method.cpp" />
+    <ClCompile Include="object_func.cpp" />
+    <ClCompile Include="padding.cpp" />
+    <ClCompile Include="pooling.cpp" />
+    <ClCompile Include="relucpp.cpp" />
+    <ClCompile Include="session.cpp" />
+    <ClCompile Include="softmax.cpp" />
+    <ClCompile Include="statistics.cpp" />
+    <ClCompile Include="tensor_callback.cpp" />
+    <ClCompile Include="tensor_loop.cpp" />
+    <ClCompile Include="tesnor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="affine.h" />
+    <ClInclude Include="batch_norm.h" />
+    <ClInclude Include="counter_extens.h" />
+    <ClInclude Include="cube_func.h" />
+    <ClInclude Include="element.h" />
+    <ClInclude Include="enumdef.h" />
+    <ClInclude Include="func_infromer.h" />
+    <ClInclude Include="gradient.h" />
+    <ClInclude Include="indexer.h" />
+    <ClInclude Include="layert.h" />
+    <ClInclude Include="macro.h" />
+    <ClInclude Include="of.h" />
+    <ClInclude Include="padding.h" />
+    <ClInclude Include="session.h" />
+    <ClInclude Include="convolution.h" />
+    <ClInclude Include="cube.h" />
+    <ClInclude Include="cross-entropy.h" />
+    <ClInclude Include="cube_loop.h" />
+    <ClInclude Include="layer_header.h" />
+    <ClInclude Include="loop_callback.h" />
+    <ClInclude Include="loop_func.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="matrix_extended.h" />
+    <ClInclude Include="poolingh.h" />
+    <ClInclude Include="relu.h" />
+    <ClInclude Include="softmax.h" />
+    <ClInclude Include="statistics.h" />
+    <ClInclude Include="tensor.h" />
+    <ClInclude Include="tensor_callback.h" />
+    <ClInclude Include="tensor_loop.h" />
+    <ClInclude Include="transform.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
