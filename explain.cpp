@@ -1,3 +1,7 @@
+#include ".\hader\mdls.h"
+
+using namespace mdls;
+
 session s = session();
 convolution conv_constructed = convolution();
 
