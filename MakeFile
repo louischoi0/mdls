@@ -1,0 +1,27 @@
+.SUFFIXES : .cpp .o
+
+OBJECTS = main.o element.o tensor.o
+DIR = c:\mine\mdlsl
+CFLAGS  = -g -c
+TARGET = mdlslib
+
+CC = g++
+
+test : tensor.o element.o layert.o object_func.o math_macro.o tensor_loop.o tensor_callback.o session.o
+	$(CC) -o test main.cpp tensor.o element.o layert.o object_func.o math_macro.o tensor_loop.o tensor_callback.o session.o
+session.o : .\modules\session.h .\modules\session.cpp
+	$(CC) -c .\modules\session.h
+tensor_callback.o : .\operation\tensor_ops\tensor_callback.h .\operation\tensor_ops\tensor_callback.cpp
+	$(CC) -c .\operation\tensor_ops\tensor_callback.cpp
+object_func.o : .\operation\tensor_ops\of.h .\operation\tensor_ops\object_func.cpp
+	$(CC) -c .\operation\tensor_ops\object_func.cpp
+tensor_loop.o : .\operation\tensor_ops\tensor_loop.h .\operation\tensor_ops\tensor_loop.cpp
+	$(CC) -c .\operation\tensor_ops\tensor_loop.cpp
+math_macro.o : .\operation\macro\macro.h .\operation\macro\math_macro.cpp
+	$(CC) -c .\operation\macro\math_macro.cpp
+tensor.o : .\objects\tensor.h .\objects\tensor.cpp
+	$(CC) -c .\objects\tensor.cpp
+element.o : .\objects\element.h .\objects\element.cpp
+	$(CC) -c .\objects\element.cpp
+layert.o : .\objects\layert.h .\objects\layert.cpp
+	$(CC) -c .\objects\layert.cpp
