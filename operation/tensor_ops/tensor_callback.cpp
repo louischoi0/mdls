@@ -15,7 +15,6 @@ void callback::negative_to_zero(elemt* p )
 void callback::negative_to_zero(elemt* p, elemt* out, counter* f)
 {
 	int idx = f->get_offset(2);
-
 	if (*p < 0)
 	{
 		*out = 0;
