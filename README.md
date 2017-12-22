@@ -28,7 +28,7 @@ Feature
 > - Rotate
 
 # How To Use
-```C
+```C++
 #include ".\hader\mdls.h"
 using namespace mdls;
 
