@@ -84,8 +84,8 @@ s.set_layer_callback(RELU, 1, [](layer* l)->void
 
 s.run();
 
-//layer* l0 = s.get_layer(0);
-// layer* l1 = s.get_layer(1);
+layer* l0 = s.get_layer(0);
+layer* l1 = s.get_layer(1);
 layer* l2 = s.get_layer(2);
 layer* l3 = s.get_layer(3);
 
