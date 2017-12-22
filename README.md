@@ -11,13 +11,13 @@ Convolution, Batch Normalization 등의 기본적인 레이어 다수를 제공�
 Feature
 ===================
 지원하는 레이어는 다음과 같습니다.
->  Convolution 
->  Softmax
->  Affine 
->  Pooling
->  Relu
->  Cross Entropy
->  Batch Normalization.
+> - Convolution 
+> - Softmax
+> - Affine 
+> - Pooling
+> - Relu
+> - Cross Entropy
+> - Batch Normalization.
  
 대표적으로 지원하는 텐서연산은 다음과 같습니다.
 > - Back Propagation
@@ -28,8 +28,8 @@ Feature
 > - Rotate
 
 # How To Use
-
-    #include ".\hader\mdls.h"
+```++
+#include ".\hader\mdls.h"
 using namespace mdls;
 
 session s = session();
@@ -127,3 +127,4 @@ tfunc::print_object(l2->get_tensor(Grad_Wgt));
 conv0_kernel.rotate(Rotate::D_90);
 conv0_kernel.rotate(Rotate::D_180);
 // and you can also rotate tensor by degrees.
+```
