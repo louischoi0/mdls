@@ -28,7 +28,7 @@ Feature
 > - Rotate
 
 # How To Use
-```++
+```C
 #include ".\hader\mdls.h"
 using namespace mdls;
 
