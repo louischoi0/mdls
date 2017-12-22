@@ -26,8 +26,8 @@ Feature
 > - Dispersion
 > - Rotate
 
-#<i class="icon-file"></i> Documents
-
+Documents
+===================
 MDLS는 여러 레이어를 가진 세션으로 단위로 연산을 수행합니다.
 사용자는 자신이 원하는 레이어를 자유롭게 추가할 수 있습니다.
 
