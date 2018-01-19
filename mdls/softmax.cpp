@@ -40,6 +40,8 @@ void softmax::proceed_inverse()
 void softmax::proceed()
 {
 	tfunc::softmax_s(_tensor_map[Input], *_tensor_map[Output]);
+
+
 }
 
 void softmax::initialize(int i)

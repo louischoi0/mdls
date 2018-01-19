@@ -5,8 +5,47 @@
 using namespace std;
 using namespace mdls;
 using namespace macro;
+void tfunc::sub(tensor*p, tensor* pp, tensor& out)
+{
+
+	shape s0 = p->get_shape();
+	shape  s1 = p->get_shape();
+
+	if (s0 != s1)
+	{
+		std::cerr << "Two tensor not equal form At operation tfunc::add";
+	}
 
 
+	elemt* ep = p->get_p();
+	elemt* epp = pp->get_p();
+	out.reshape(s0);
+
+	out.apply_to_all_elem([ &ep, &epp](elemt* p)->void {
+		*p = *ep++ - *epp;
+	});
+
+}
+void tfunc::add(tensor* p, tensor* pp, tensor& out)
+{
+	shape s0 = p->get_shape();
+	shape  s1 = p->get_shape();
+
+	if (s0 != s1)
+	{
+		std::cerr << "Two tensor not equal form At operation tfunc::add";
+	}
+
+
+	elemt* ep = p->get_p();
+	elemt* epp = pp->get_p();
+	out.reshape(s0);
+
+	out.apply_to_all_elem([ &ep, &epp](elemt* p)->void {
+		*p = *ep++ + *epp;
+	});
+
+}
 
 void tfunc::init_tensor_ladder(tensor& c)
 {

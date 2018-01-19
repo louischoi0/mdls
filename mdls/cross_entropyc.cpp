@@ -1,5 +1,5 @@
 #include "cross-entropy.h"
-
+#include "of.h"
 using namespace mdls;
 using namespace mathm;
 
@@ -29,6 +29,16 @@ void mdls::cross_entropy::initialize(int i)
 
 void cross_entropy::proceed()
 {
+	
+	tfunc::softmax_s(_tensor_map[Input], *_tensor_map[Output]);
+	_tensor_map[Weight]->apply_to_all_elem([](elemt* p)->void {
+		*p *= -1;
+	});
+
+	
+
+
+
 }
 
 void cross_entropy::proceed_inverse()

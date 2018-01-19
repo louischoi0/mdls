@@ -71,5 +71,28 @@ int test_with_explain()
 
 int main()
 {
-	test_with_explain();
+	tensor t0(1, 2, 4, 4);
+	tensor t1(1, 2, 4, 4);
+	tensor out(1, 2, 4, 4);
+	tfunc::init_tensor_ladder(t0);
+
+	t1.initialize_elem_to(1);
+
+
+	elemt* ep = t0.get_p();
+	elemt* epp = t1.get_p();
+
+
+	out.apply_to_all_elem([&ep, &epp](elemt* p)
+	{
+		*p = *ep++ + *epp++;
+	});
+
+	tfunc::print_object(&out);
+	int i = 1;
+
+
+
+
+//	test_with_explain();
 }

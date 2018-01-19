@@ -11,10 +11,10 @@ namespace mdls
 		void nhwc_to_hwio(tensor* c, tensor& out, int stride_row, int stride_col, int count_row_to_copy, int count_col_to_copy);
 		void add_padding(tensor& p, Dm n, int size);
 	
-		
 		void softmax(tensor* p, tensor& out);
 		void softmax_s(tensor* p, tensor& out);
-
+		void add(tensor* p, tensor* pp, tensor& out);
+		void sub(tensor* p, tensor* pp, tensor& out);
 		void init_tensor_ladder(tensor& c);
 		void init_tensor_with_random(tensor& t,int s , int e );
 	
