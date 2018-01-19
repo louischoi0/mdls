@@ -7,15 +7,13 @@ using namespace mdls;
 using namespace macro;
 void tfunc::sub(tensor*p, tensor* pp, tensor& out)
 {
-
 	shape s0 = p->get_shape();
 	shape  s1 = p->get_shape();
 
 	if (s0 != s1)
 	{
-		std::cerr << "Two tensor not equal form At operation tfunc::add";
+		std::cerr << "Two tensor not equal form At operation tfunc::sub";
 	}
-
 
 	elemt* ep = p->get_p();
 	elemt* epp = pp->get_p();

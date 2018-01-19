@@ -75,7 +75,6 @@ int main()
 	tensor t1(1, 2, 4, 4);
 	tensor out(1, 2, 4, 4);
 	tfunc::init_tensor_ladder(t0);
-
 	t1.initialize_elem_to(1);
 
 
