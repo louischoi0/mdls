@@ -23,7 +23,7 @@ namespace mdls
 		batch_normalization(tensor* input, tensor* eqiv, tensor* bias);
 
 	public:
-
+		virtual void write_node_map() {};
 		virtual void initialize();
 		virtual void proceed_inverse();
 		virtual void proceed();

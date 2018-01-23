@@ -9,7 +9,7 @@ namespace mdls
 	private:
 		static int count;
 		int* pooling_out_arr;
-	
+		virtual void write_node_map() {};
 	public:
 		pooling();
 		pooling(tensor*);

@@ -18,8 +18,11 @@ namespace mdls
 
 		virtual bool proc_possible();
 		virtual void set_output_inform_from_val();
-		virtual int get_layer_count() { return count; };
 
+		virtual int get_layer_count() { return count; };
+		
+	private:
+		virtual void write_node_map() {};
 
 	};
 

@@ -4,10 +4,11 @@
 
 namespace mdls
 {
-	
+
 	class softmax : public layer
 	{
 	private:
+		virtual void write_node_map() {};
 		static int count;
 	public:
 		softmax();

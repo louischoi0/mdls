@@ -23,6 +23,7 @@ namespace mdls
 		tensor* temporal_weight_w_p;
 
 	public:
+		virtual void write_node_map() {};
 		void get_grad_weight(const tensor* bgrad, const tensor* in, const tensor* filter, tensor& out);
 		void get_grad_input(const tensor* bgrad, const tensor* in, const tensor* filter, tensor& out);
 

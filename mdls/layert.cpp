@@ -1,26 +1,8 @@
 #include "layert.h"
 
-
 using namespace mdls;
 typedef layer_w_t layer;
-
-
-std::string str_route(int i)
-{
-	if (i == 0)
-		return " Input";
-	else if (i == 1)
-		return " Weight";
-	else if (i == 2)
-		return " Output";
-	else if (i == 3)
-		return " Grad_in";
-	else if (i == 4)
-		return " Grad_Wgt";
-	else if (i == 5)
-		return " Bias";
-
-}
+const std::vector<string> strMap = { "Input", "Wehgit", "Output", "Grad_in", "Grad_Weight", "Bias" };
 
 layer::layer_w_t() :
 	end_layer(false),
@@ -30,7 +12,6 @@ layer::layer_w_t() :
 	initialize_tensor();
 	eqiv_set();
 }
-
 
 layer::layer_w_t(ly_type t) :
 	_tensor_map(new tensor*[5]),
@@ -125,11 +106,6 @@ void layer::preprocessing()
 }
 
 
-void layer::proceed_inverse()
-{
-
-}
-
 void layer::set_output_inform_from_val()
 {
 
@@ -171,12 +147,12 @@ void layer::set_tag_inform()
 	int count = get_this_layer_count();
 
 	if ( start_layer && _inf.ht[0] )
-		_tensor_map[Input]->set_tag(type_name + std::to_string(count) + str_route(0));
+		_tensor_map[Input]->set_tag(type_name + std::to_string(count) + strMap[0]);
 
 	for (int i = 1; i < 6; i++)
 	{
 		if(_inf.ht[i])
-			_tensor_map[i]->set_tag(type_name + std::to_string(count) + str_route(i) );
+			_tensor_map[i]->set_tag(type_name + std::to_string(count) + strMap[i] );
 	}
 }
 

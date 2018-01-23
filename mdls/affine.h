@@ -1,14 +1,16 @@
 #pragma once
 #include "layert.h"
+#include "layerInterface.h"
 
 #include <random>
-
 using namespace mathm;
 
 namespace mdls
 {
-	class affine : public layer
+	class affine : public layer, public layerITF
 	{
+		
+		
 	private:
 		static int count;
 		void get_weight(const tensor& bgrad, const tensor& in, const tensor& filter, tensor& iout, tensor& wout);
@@ -22,6 +24,16 @@ namespace mdls
 	
 	public:
 
+		virtual void write_node_map(NodeMap** n) {
+		
+			NodeMap* np = *n;
+
+			
+		};
+
+
+
+		virtual void init_with_cast();
 		virtual void initialize_inverse();
 
 		virtual void proceed();

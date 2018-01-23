@@ -5,9 +5,17 @@ using namespace mdls;
 int affine::count = 0;
 
 
-affine::affine() :
+
+void affine::init_with_cast()
+{
+	this->self = const_cast<layerITF*>((layerITF*)this);
+}
+	affine::affine() :
 	layer(layer_extended_enum::AFFINE)
 {
+	init_with_cast();
+
+
 	pstatic_count = &affine::count;
 	set_type_name("Affine");
 

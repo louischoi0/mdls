@@ -6,7 +6,7 @@ namespace mdls
 
 	class relu : public layer
 	{
-
+		virtual void write_node_map() {};
 		static int count;
 	public:
 			relu();

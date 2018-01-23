@@ -53,7 +53,7 @@ namespace mdls
 	};
 
 	typedef layer_extended_enum ly_type;
-
+	typedef ly_type layer_ex_type;
 
 	typedef enum Tensor_Index_In_Layer
 	{

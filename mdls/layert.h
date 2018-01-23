@@ -1,11 +1,12 @@
 #pragma once
 
 #include "matrix_extended.h"
-#include "layert.h"
-
+#include "layerInterface.h"
 
 #include <string>
 using namespace mathm;	
+
+
 
 namespace mdls
 {
@@ -62,8 +63,13 @@ namespace mdls
 		void initialize_tensor();
 		void eqiv_set();
 		
+		Node* pNodeMap;
+		Node* bpNodeMap;
 
 	protected:
+		
+		
+
 		int* pstatic_count;
 		int index_eqaul_layers;
 
@@ -113,8 +119,22 @@ namespace mdls
 		tensor* get_bias_tensor() { return _tensor_map[5]; };
 
 
+	protected:
+		layerITF*self;
 
 	public:
+		void write_in_graph_node_relt(Node** n);
+
+		inline void proceed()
+		{
+			self->proceed();
+		}
+		inline void proceed_inverse()
+		{
+			self->proceed_inverse();
+		}
+
+
 
 		inline void set_tensor(Tensor_Index_In_Layer pos, tensor* p)
 		{
@@ -130,8 +150,8 @@ namespace mdls
 		void set_tensor__copy(tensor* in , Tensor_Index_In_Layer i);
 
 		virtual void initialize(int i) {};
-		virtual void proceed() {};
-
+		virtual void init_with_cast() {};
+		
 		inline void set_forward_lay(layer* m) { _forward_lay = m; };
 		inline void set_backward_lay(layer* m) { _backward_lay = m; };
 
@@ -162,8 +182,6 @@ namespace mdls
 		void preprocessing(layer*);
 		void preprocessing();
 
-		virtual void proceed_inverse();
-
 		void process_drop_out(int weight_number);
 		void drop_out_close(int weight_number);
 
@@ -186,13 +204,19 @@ namespace mdls
 		};
 
 		bool process_possible();
-
 		void get_grad_in_case(bool input_or_weight, int input_index, int weight_index, tensor& to_write);
+
+
+
+
 
 	};
 
 	void inc_layer_type_count(int* i, std::string s);
-	
+
+
+
+
 }
 
 
