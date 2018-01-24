@@ -16,7 +16,8 @@ Feature
 > - Pooling
 > - Relu
 > - Cross Entropy
-> - Batch Normalization.
+> - Batch Normalization
+> - Dense
  
 대표적으로 지원하는 텐서연산은 다음과 같습니다.
 > - Back Propagation
