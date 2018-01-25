@@ -2,6 +2,8 @@
 
 #include "matrix_extended.h"
 #include "layerInterface.h"
+#include "node.h"
+
 
 #include <string>
 using namespace mathm;	
@@ -37,10 +39,10 @@ namespace mdls
 
 		size_t padding_row = 0;
 		size_t padding_col = 0;
-
-
 	};
 	
+
+
 	typedef void(*TTT)(tensor* t, tensor* tt, tensor& o);
 	
 	typedef CALLBACK_WITH_TWO_ELEM_P ACTIVE_CALLBACK;
@@ -63,12 +65,11 @@ namespace mdls
 		void initialize_tensor();
 		void eqiv_set();
 		
-		Node* pNodeMap;
-		Node* bpNodeMap;
+
 
 	protected:
-		
-		
+
+		NodeMap* map;
 
 		int* pstatic_count;
 		int index_eqaul_layers;
@@ -207,8 +208,11 @@ namespace mdls
 		void get_grad_in_case(bool input_or_weight, int input_index, int weight_index, tensor& to_write);
 
 
-
-
+		void proceed_node_mode()
+		{
+			map->act_all_nodes();
+		}
+		
 
 	};
 

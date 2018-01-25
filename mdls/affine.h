@@ -10,7 +10,6 @@ namespace mdls
 	class affine : public layer, public layerITF
 	{
 		
-		
 	private:
 		static int count;
 		void get_weight(const tensor& bgrad, const tensor& in, const tensor& filter, tensor& iout, tensor& wout);

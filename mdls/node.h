@@ -5,19 +5,14 @@
 namespace mdls
 {
 
-
-	struct nodeDescription
-	{
-		int activation;
-		int routine;
-
-
-	};
+	typedef void(*layerRoutine)(elemt*, elemt*, elemt*);
+	typedef void(*Activation)(elemt*, elemt*);
 
 	class Node
 	{
-		int NodeCount;
+		layerRoutine routine;
 
+		int NodeCount;
 		elemt** relNode;
 
 		int index_in_layer;
@@ -25,6 +20,15 @@ namespace mdls
 
 		elemt out;
 	public:
+		inline void set_routine(layerRoutine routine)
+		{
+			this->routine = routine;
+		}
+
+		void set_flow(int flow) {
+			NodeCount = flow;
+		};
+
 		Node(int count) :
 			NodeCount(count)
 		{
@@ -37,14 +41,27 @@ namespace mdls
 			relNode = new elemt*[3];
 			relNode[2] = &out;
 		}
+		int get_x()
+		{	
+			return *relNode[0];
+		}
+		int get_y()
+		{
+			return *relNode[1];
+		}
+
+		void set_up(int flow , elemt* p)
+		{
+			if (NodeCount < flow)
+				return;
+
+			for (int i = 0; i < flow; i++)
+				relNode[i] = p++;
+		}
+
 		void act()
 		{
-			auto add = [](elemt** p)->void
-			{
-				**(p + 2) = **p + **(p + 1);
-			};
-
-			add(relNode);
+			routine(relNode[0], relNode[1], relNode[2]);
 		}
 
 		elemt get_out()
@@ -62,6 +79,47 @@ namespace mdls
 		};
 
 	};
+
+	typedef void(*placerRoutine) (elemt** p, int nodeCount, elemt* out);
+
+	class Placer
+	{
+		Node** relNode;
+		Node* outNode;
+
+		int flow;
+
+		placerRoutine routine;
+		Activation activation;
+	public:
+		void act()
+		{
+		};
+
+		Placer()
+		{
+		}
+
+		Placer(int flow) :
+			flow(flow)
+ 		{
+			relNode = new Node*[flow];
+		}
+
+		void init_rel_node(int flow, Node* p)
+		{
+			relNode = new Node*[flow];
+			for (int i = 0; i < flow; i++)
+				relNode[i] = p++;
+		}
+
+		void set_out_node(elemt* p)
+		{
+
+		}
+	};
+
+
 	class vHolder
 	{
 		Node* nd;
@@ -108,34 +166,92 @@ namespace mdls
 	class NodeMap
 	{
 		int idxTensor;
-
-		int countInNode;
-		int countWeiNode;
+		int pCount;
 
 		Node* iMap;
+		Node* oMap;
+
+		Placer* placer;
+
 		vHolder* hMap;
 
-	public:
+		shape nodeShape;
+		int nodeCount;
 
-		NodeMap(int count)
+
+	public:
+		Node * get_node(int idx) { return &iMap[idx]; };
+		int get_node_count() { return nodeCount; };
+
+		NodeMap(shape sh) :
+			nodeShape(sh),
+			nodeCount(sh.Alloc_size)
+		{
+
+		}
+
+		NodeMap(int count) :
+			nodeCount(count),
+			nodeShape(1, 1, 1, count)
 		{
 			iMap = new Node[count];
 			hMap = new vHolder[count];
 		}
 
-		NodeMap(int count, elemt** p0, elemt** p1)
+		void set_node_address_x_by_interval(int interval, elemt* p)
 		{
-			Node* pMap = iMap;
+			elemt* pp = p;
+			int j = 0;
+			
+			for (int i = 0; i < nodeCount / interval; i++)
+			{
+				pp = p;
+				for (int k =0; k < interval; k++, j++)
+					iMap[j].set_elemtp_by_col(pp++, 0);
+			}
+		}
+		void set_node_address_y_by_interval(int interval, elemt* p)
+		{
+			elemt* pp = p;
+			int j = 0;
 
-			elemt* pp0 = *p0;
-			elemt* pp1 = *p1;
-
-			for (int i = 0; i < count; i++, pp0++)
-				pMap->set_elemtp_by_col(pp0, 0);
-			for (int i = 0; i < count; i++, pp1++)
-				pMap->set_elemtp_by_col(pp1, 1);
+			for (int i = 0; i < nodeCount / interval; i++,p++)
+				for (int k =0; k < interval; k++ , j++)
+					iMap[j].set_elemtp_by_col(p, 1);
 		}
 
+		void set_placer_routine(layerRoutine routine)
+		{
+
+		}
+		
+		void set_nodes_routine(layerRoutine routine)
+		{
+			for (int i = 0; i < nodeCount; i++)
+				iMap[i].set_routine(routine);
+		}
+
+		void set_out_node_dens(int ncount, elemt* p)
+		{
+		}
+
+		void set_placer_dens(int flowPerNode ,int interval, Node* p)
+		{
+		}
+
+		void set_dens()
+		{
+
+		}
+		
+		void act_all_nodes()
+		{
+			for (int i = 0; i < nodeCount; i++)
+				iMap[i].act();
+		}
+	
 	};
 
-}
+
+};
+

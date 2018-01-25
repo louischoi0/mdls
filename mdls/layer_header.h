@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Dense.h"
 #include "affine.h"
 #include "batch_norm.h"
 #include "softmax.h"

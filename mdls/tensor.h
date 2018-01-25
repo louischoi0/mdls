@@ -15,6 +15,8 @@ namespace mdls
 
 		tensor& operator=(const tensor& k);
 
+
+
 	};
 
 }

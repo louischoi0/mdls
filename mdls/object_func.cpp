@@ -5,6 +5,48 @@
 using namespace std;
 using namespace mdls;
 using namespace macro;
+
+void loop_target_dim(target_dm d , tensor* p, tensor* p1,CALLBACK_SINGLE_LOOP_P_2 callback  )
+{
+	shape sh(p->get_shape());
+
+	int elemtc = 1;
+	int upperc = 1;
+
+	for (int i = d; i >= 0; i--)
+		upperc *= *sh.p[i];
+	
+	for (int i = d + 1; i < 4; i++)
+		elemtc *= *sh.p[i];
+
+	elemt* ep = p->get_p();
+	elemt* epp = p1->get_p();
+	
+	for (int j = 0; j < upperc; j++, epp++)
+		for (int i = 0; i < elemtc; i++)
+			callback(ep++, epp);
+		
+}
+
+
+void tfunc::reduced_sum(target_dm dm , tensor* p , tensor& out )
+{
+	shape sh(p->get_shape());
+
+	for (int i = dm + 1; i < 4; i++)
+		*sh.p[i] = 1;
+
+	shape shh(sh);
+	
+	out.reshape(shh);
+	out.initialize_elem_to(0);
+
+	loop_target_dim(dm, p, &out, [](elemt* p, elemt* pp) ->void {
+		*pp += *p;
+	});
+
+}
+
 void tfunc::sub(tensor*p, tensor* pp, tensor& out)
 {
 	shape s0 = p->get_shape();

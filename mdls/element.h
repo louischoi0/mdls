@@ -6,7 +6,6 @@
 #include <functional>
 
 
-
 #ifndef LOG_LEVEL 
 #define LOG_LEVEL 0
 
@@ -14,111 +13,6 @@
 
 namespace mdls
 {
-	class vHolder
-	{
-		Node* nd;
-		std::pair<int,elemt>* buffer;
-		
-		int now;
-		int epochs;
-		int ops;
-
-	public :
-		vHolder(Node* n) :
-			now(0),
-			nd(n)
-		{
-
-		}
-		vHolder() :
-			now(0)
-		{
-
-		}
-
-		vHolder(int epc) :
-			now(0),
-			epochs(epc)
-		{
-			buffer = new std::pair<int , elemt>[epc];
-		};
-
-		void set_epochs(int epc)
-		{
-			epochs = epc;
-			buffer = new std::pair<int, elemt>[epc];
-		}
-
-		void avante()
-		{
-			buffer[now++] = std::pair<int, elemt>(now, nd->get_out());
-		}
-
-	};
-
-
-	class Node
-	{
-		int NodeCount;
-		
-		elemt** relNode;
-
-		int index_in_layer;
-		int type;
-	
-		elemt out;
-	public :
-		Node()
-		{
-
-		}
-
-		elemt get_out()
-		{
-			return out;
-		}
-		void set_elemtp_by_col(elemt* p , int idx)
-		{
-			relNode[idx] = p;
-
-		};
-
-};
-
-	class NodeMap
-	{
-		int idxTensor;
-		
-		int countInNode;
-		int countWeiNode;
-		
-		Node* iMap;
-		vHolder* hMap;
-
-	public:
-
-		NodeMap(int count) 
-		{
-			iMap = new Node[count];
-			hMap = new vHolder[count];
-
-		}
-
-		NodeMap(int count, elemt** p0, elemt** p1)
-		{
-			Node* pMap = iMap;
-
-			elemt* pp0 = *p0;
-			elemt* pp1 = *p1;
-
-			for (int i = 0; i < count; i++,pp0++)
-				pMap->set_elemtp_by_col(pp0,0);
-			for (int i = 0; i < count; i++, pp1++)
-				pMap->set_elemtp_by_col(pp1, 1);
-		}
-
-	};
-
 	using namespace std;
 
 #define eTask_lambda [](elemt* p)->void
@@ -379,6 +273,7 @@ namespace mdls
 		void apply_to_all_elem(std::function< void(elemt*) > a);
 		void apply_with_equal_form(std::function< void(elemt* ,elemt*) >, const element& );
 		void apply_to_elem_by_batch(std::function<void(elemt* p, elemt* pp)> f, elemt * opts);
+	
 	};
 
 	void convert_index_by_rotate(int i, int& c, int& r, const shape& s);
