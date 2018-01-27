@@ -2,23 +2,37 @@
 #include "enumdef.h"
 #include "element.h"
 
+
+
 namespace mdls
 {
+	enum NodeType
+	{
+		Perceptron = 0,
+		Unbound = 1,
+		Collector = 2
+	};
 
 	typedef void(*layerRoutine)(elemt*, elemt*, elemt*);
 	typedef void(*Activation)(elemt*, elemt*);
 
 	class Node
 	{
-		layerRoutine routine;
+		friend class Placer;
 
+		layerRoutine routine;
+		Activation activation;
+
+		int outIndex;
 		int NodeCount;
+
 		elemt** relNode;
 
 		int index_in_layer;
-		int type;
+		NodeType type;
 
 		elemt out;
+		int assign;
 	public:
 		inline void set_routine(layerRoutine routine)
 		{
@@ -29,18 +43,105 @@ namespace mdls
 			NodeCount = flow;
 		};
 
+		Node(NodeType t) :
+			assign(0),
+			type(t)
+		{
+			if (t == NodeType::Perceptron)
+			{
+				NodeCount = 3;
+				relNode = new elemt*[3];
+				outIndex = NodeCount - 1;
+				relNode[outIndex] = &out;
+			}
+
+		}
+		void make_this_collector(int flow)
+		{
+			NodeCount = flow;
+			free(relNode);
+			relNode = new elemt*[NodeCount +1];
+			outIndex = flow;
+			relNode[outIndex] = &out;
+			assign = 0;
+		}
+
+		void make_this_perceptron()
+		{
+			NodeCount = 3;
+			relNode = new elemt*[3];
+			outIndex = NodeCount - 1;
+			relNode[outIndex] = &out;
+		}
+		void make_this_bounder()
+		{
+			NodeCount = 2;
+			relNode = new elemt*[2];
+			outIndex = 2 - 1;
+			relNode[outIndex] = &out;
+		}
+
+		Node(const Node* n) :
+			NodeCount(n->NodeCount),
+			outIndex(n->outIndex),
+			assign(0)
+		{
+			relNode = new elemt*[NodeCount];
+
+			for (int i = 0; i < NodeCount; i++)
+			{
+				relNode[i] = n->relNode[i];
+			}
+		}
+
+		Node(const Node& n) :
+			NodeCount(n.NodeCount),
+			outIndex(n.outIndex),
+			assign(0)
+		{
+			relNode = new elemt*[NodeCount];
+
+			for (int i = 0; i < NodeCount; i++)
+			{
+				memcpy(relNode[i], n.relNode[i], sizeof(elemt));
+			}
+		}
+		
+		Node& operator=(elemt value)
+		{
+			*relNode[2] = value;
+			return *this;
+		}
+
+		Node& operator+=(const Node& n)
+		{
+			if (assign >= NodeCount)
+			{
+				cout << "Node overflow exeption" << endl;
+				return *this;
+			}
+
+			relNode[assign++] = n.relNode[n.outIndex];
+			return *this;
+		}
+
 		Node(int count) :
-			NodeCount(count)
+			NodeCount(count),
+			outIndex(count),
+			assign(0)
 		{
 			relNode = new elemt*[count + 1];
 			relNode[count] = &out;
 		}
 
-		Node()
+		Node() :
+			NodeCount(3),
+			outIndex(2)
 		{
 			relNode = new elemt*[3];
 			relNode[2] = &out;
 		}
+		
 		int get_x()
 		{	
 			return *relNode[0];
@@ -64,40 +165,168 @@ namespace mdls
 			routine(relNode[0], relNode[1], relNode[2]);
 		}
 
+		inline void set_node_count(int c)
+		{
+			NodeCount = c;
+		}
+
 		elemt get_out()
 		{
-			return out;
+			return *relNode[outIndex];
 		}
 		elemt* get_out_addres()
 		{
-			return &out;
+			return relNode[outIndex];
 		}
 
 		void set_elemtp_by_col(elemt* p, int idx)
 		{
 			relNode[idx] = p;
 		};
+		typedef void(*nCall)( elemt** te, Node* narr);
+
+		void call_by_interval(int interval,int rinterval, Node* p, nCall n)
+		{
+			elemt** ep = relNode;
+
+			for(int i = 0; i < interval; i++, p++)
+				for (int j = 0; j < rinterval; j++, ep++)
+				{
+					n(ep++, p);
+				}
+		}
+		void call_by_rinterval(int interval, int rinterval, Node* p, nCall n)
+		{
+			elemt** ep = relNode;
+
+			for (int i = 0; i < interval; i++, ep++)
+				for(int j = 0; j < rinterval;  j++, p++)
+			{
+					n(ep, p);
+			}
+		
+		}
+		void set_activation(Activation a)
+		{
+			activation = a;
+		}
+		void activate()
+		{
+			activation(relNode[0], relNode[1]);
+		}
 
 	};
 
-	typedef void(*placerRoutine) (elemt** p, int nodeCount, elemt* out);
+	typedef void(*placerRoutine) (Node** p, int nodeCount, elemt* out);
+	class IPlacer
+	{
+
+	};
+
 
 	class Placer
 	{
 		Node** relNode;
-		Node* outNode;
+		Node* colNode;
 
 		int flow;
+		int nodes;
 
 		placerRoutine routine;
 		Activation activation;
+	
 	public:
+		void pact()
+		{
+			Node** rN = relNode;
+			Node* cN = colNode;
+			for (int i = 0; i < nodes; i++ , rN += flow, cN++)
+			{
+				routine(rN, flow, cN->relNode[cN->outIndex]);
+			}
+		}
+		void set_placer_routine(placerRoutine n) { this->routine = n; };
+
+		void bind_out_node(Node* outNode, int ncount , int flow)
+		{
+			Node** fn = relNode;
+			Node* on = outNode;
+			
+			colNode = new Node[ncount];
+			int idx = 0;
+			
+			set_placer_routine([](Node** rN, int flow, elemt* cN) ->void {
+				*cN = 0;
+				for (int i = 0; i < flow; i++, rN++)
+				{
+					*cN += (*rN)->get_out();
+				}
+			});
+
+			for (int i = 0; i < ncount; i++,on++)
+			{
+				colNode[i].make_this_collector(flow);
+
+				for (int j = 0; j < flow; j++, fn++)
+						colNode[i] += (*fn);
+
+				on->relNode[0] = colNode[i].relNode[flow];
+			}
+		}
+		void activate()
+		{
+			Node* oN = colNode;
+			for (int i = 0; i < nodes; i++)
+			{
+			
+			}
+
+		}
+
+		void fully_connected(Node* flowNode, int ncount)
+		{
+			Node** n = relNode;
+			Node* fn = flowNode;
+
+			for (int i = 0; i < ncount; i++)
+			{
+				for (int j = 0; j < flow; j++)
+				{
+					*(n++) = new Node(fn++);
+				}
+			}
+		}
+
+		void test()
+		{
+			Node** np = relNode;
+			Node* op = colNode;
+
+			for (int i = 0; i < flow; i++)
+			{
+				for (int j = 0; j < nodes; j++)
+				{
+					cout << "x : " << *((*np)->relNode[0]) << "  y : " << *((*np)->relNode[1]) << "  out : " << *(*np)->relNode[2] << endl;
+					np++;
+				}
+
+			}
+
+		}
+
 		void act()
 		{
 		};
 
 		Placer()
 		{
+		}
+		Placer(int flow, int nodeCount) :
+			nodes(nodeCount),
+			flow(flow)
+		{
+			relNode = new Node*[flow * nodeCount];
+			colNode = new Node[nodeCount];
 		}
 
 		Placer(int flow) :
@@ -178,7 +407,6 @@ namespace mdls
 		shape nodeShape;
 		int nodeCount;
 
-
 	public:
 		Node * get_node(int idx) { return &iMap[idx]; };
 		int get_node_count() { return nodeCount; };
@@ -197,7 +425,18 @@ namespace mdls
 			iMap = new Node[count];
 			hMap = new vHolder[count];
 		}
+		void set_node_info()
+		{
 
+		}
+		void convert_inodes_to_perceptron()
+		{
+			for (int i = 0; i < nodeCount; i++)
+			{
+				iMap[i].make_this_perceptron();
+			}
+		
+		}
 		void set_node_address_x_by_interval(int interval, elemt* p)
 		{
 			elemt* pp = p;
@@ -220,6 +459,16 @@ namespace mdls
 					iMap[j].set_elemtp_by_col(p, 1);
 		}
 
+		void set_out_node_dens(int ncount, int flowPerNode ,elemt* p)
+		{
+			oMap = new Node[ncount];
+			for (int i = 0; i < ncount; i++)
+			{
+				oMap[i].make_this_bounder();
+				oMap[i].set_elemtp_by_col(p++ , 1);
+			}
+		}
+
 		void set_placer_routine(layerRoutine routine)
 		{
 
@@ -230,28 +479,40 @@ namespace mdls
 			for (int i = 0; i < nodeCount; i++)
 				iMap[i].set_routine(routine);
 		}
-
-		void set_out_node_dens(int ncount, elemt* p)
+		void operate_nodes()
 		{
+			act_all_nodes();
+			placer->pact();
+			activate_all_nodes(8);
+		}	
+
+		void set_placer_dens(int flowPerNode ,int interval)
+		{
+			placer = new Placer(flowPerNode, interval);
+			placer->fully_connected(iMap, interval);
+			placer->bind_out_node(oMap, interval, flowPerNode);
 		}
 
-		void set_placer_dens(int flowPerNode ,int interval, Node* p)
-		{
-		}
-
-		void set_dens()
-		{
-
-		}
-		
 		void act_all_nodes()
 		{
 			for (int i = 0; i < nodeCount; i++)
 				iMap[i].act();
+
 		}
-	
+		void activate_all_nodes(int ncount)
+		{
+			for (int i = 0; i < ncount; i++)
+			{
+				oMap[i].activate();
+			}
+
+		}
+		void set_activation(int ncount, Activation a)
+		{
+			for (int i = 0; i < ncount; i++)
+				oMap[i].set_activation(a);
+		}
+
 	};
 
-
 };
-
