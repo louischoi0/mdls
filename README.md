@@ -9,7 +9,7 @@ Convolution, Batch Normalization 등의 기본적인 레이어 다수를 제공�
 
 Feature
 ===================
--Layers
+ 지원하는 레이어는 다음과 같습니다.
 > - Convolution 
 > - Softmax
 > - Affine 
