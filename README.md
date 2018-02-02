@@ -30,7 +30,7 @@ Feature
 
 Documents
 ===================
-MDLS는 여러 레이어를 가진 세션으로 단위로 연산을 수행합니다.
+MDLS는 여러 레이어를 가진 세션 단위로 연산을 수행합니다.
 사용자는 자신이 원하는 레이어를 자유롭게 추가할 수 있습니다.
 
 
@@ -152,4 +152,9 @@ layer::get_tensor 메소드로 각레이어의 입력,가중치,편향,입력미
 conv0_kernel.rotate(Rotate::D_90);
 conv0_kernel.rotate(Rotate::D_180);
 ```
-또한 Tensor를 각도에따라 회전시킬수도 있습니다.
+또한 Tensor를 각도에따라 회전시킬수도 있습니다
+
+
+
+
+
