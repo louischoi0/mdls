@@ -1,9 +1,12 @@
 #include "session.h"
+#include "graph.h"
 
 using namespace mathm;
 #define LAYER_TYPE_NUM 10
 
 session::session() :
+	operationMode(false),
+	gAssigned(0),
 	input(false),
 	weight(false)
 {
@@ -12,33 +15,33 @@ session::session() :
 
 
 session::session(int size) :
-first(true),
-input(false),
-weight(false),
-layer_count(size),
-_occupied_size(0),
-
-type_session(CUSTOM),
-session_route(new cube_map[6])
-
+	operationMode(false),
+	gAssigned(0),
+	first(true),
+	input(false),
+	weight(false),
+	layer_count(size),
+	_occupied_size(0),
+	type_session(CUSTOM),
+	session_route(new cube_map[6])
 {
 	init();
 }
 
 session::session(session_type t) :
-first(true),
-layer_count(size_for_session_type[t]),
-_occupied_size(0),
-input(false),
-weight(false),
-
-session_route(new cube_map[6]),
-type_session(t)
+	operationMode(false),
+	gAssigned(0),
+	first(true),
+	layer_count(size_for_session_type[t]),
+	_occupied_size(0),
+	input(false),
+	weight(false),
+	session_route(new cube_map[6]),
+	type_session(t)
 {
 	init();
 
 }
-
 
 void session::make_layer_type_arr(session_type t, layer_ex_type* tt)
 {
@@ -68,19 +71,14 @@ void session::init()
 			index_layer_by_type[i][k] = -1;
 	
 	}
-
-
-
-
 }
 
 void mdls::session::add_layer(layer_ex_type t)
 {
 	layer_arr[count_added] = t;
-
 	index_layer_by_type[t][exist_count[t]++] = count_added;
-
 	count_added++;
+
 }
 
 int mdls::session::get_index(layer_extended_enum type, int index)
@@ -104,9 +102,13 @@ void mdls::session::run()
 			return;
 		}
 	
-		layer_ref[i]->proceed();
+		if (!operationMode)
+			layer_ref[i]->proceed_by_nodes();
+
+		else
+			layer_ref[i]->proceed();
+
 		callback_after_layer_runs[i](layer_ref[i]);
-		
 		layer_ref[i]->set_tag_inform();
 
 		if (i < _occupied_size - 1)
@@ -192,9 +194,18 @@ void session::preprocessing()
 
 	_occupied_size = count_added;
 
+	if (!operationMode)
+	{
+		graphMap = new NodeMap*[gAssigned];
+		//for (int i = 0; i < count_added; i++)
+			//add_graph(layer_ref[i]);
+	}
 }
 
-
+void session::add_graph(layer* l)
+{
+	graphMap[gAssigned++] = l->get_node_map();
+}
 
 cube_iter session::get_cube_iter(layer_ex_type t, int index, int pos)
 {

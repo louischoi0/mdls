@@ -1,4 +1,5 @@
 #include "cube_func.h"
+#include "func_infromer.h"
 using namespace loop;
 using namespace callback;
 using namespace macro;

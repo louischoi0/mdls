@@ -14,7 +14,7 @@ element::element() :
 	_eshape(0,0,0,0),
 	_offset(_eshape)
 {
-	_alloc_size = 1;
+	_alloc_size = 0;
 }
 
 
@@ -55,9 +55,13 @@ void element::reshape(const shape& s)
 	else
 	{
 		elemt* t = new elemt[ s.Alloc_size ];
-		memcpy(t, _pv, sizeof(elemt) * _eshape.Alloc_size);
-
-		free(_pv);
+		
+		if (_eshape.Alloc_size != 0)
+		{
+			memcpy(t, _pv, sizeof(elemt) * _eshape.Alloc_size);
+			free(_pv);
+		}
+			
 		_pv = (elemt*)malloc(sizeof(elemt) * s.Alloc_size);
 
 		memcpy(_pv, t, sizeof(elemt) * _eshape.Alloc_size);

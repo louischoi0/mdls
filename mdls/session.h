@@ -22,19 +22,26 @@ namespace mdls
 	typedef layer** map_layer;
 	typedef cube_iter* cube_map;
 	typedef cube_map* cube_route;
+	
+	class graph;
 
 	class session
 		{
+
+
 		public:
 			session();
 			session(int size);
 			session(session_type);
 
 		private:
+			bool operationMode;
 			bool first;
 
 			bool input;
 			bool weight;
+
+			int gAssigned;
 
 			int _occupied_size;
 			int count_added;
@@ -42,6 +49,8 @@ namespace mdls
 
 			int* occupied;
 
+			NodeMap** graphMap;
+			
 			type_layer* type_arr;
 
 			size_t layer_count;
@@ -58,16 +67,14 @@ namespace mdls
 			tensor* _weight_tensor;
 			
 			layerTask* callback_after_layer_runs;
-
-		private:
-			bool check_proc_pos();
-
+			void add_graph(layer*);
+						
 		public:
+			void set_operation_mode() { operationMode = true; };
+
 			void process();
-
-
 			void preprocessing();
-
+			
 			void set_layer_inform
 			(ltype l ,int i , int stride_col, int stride_row, int padding_col= 0 , int padding_row = 0)
 			{ 

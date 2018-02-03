@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <random>
-#include "func_infromer.h"
 #include "macro.h"
 
 

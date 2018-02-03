@@ -1,4 +1,5 @@
 #include "loop_callback.h"
+#include "func_infromer.h"
 #include <cmath>
 
 using namespace std;

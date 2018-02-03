@@ -4,7 +4,6 @@
 #include "layerInterface.h"
 #include "node.h"
 
-
 #include <string>
 using namespace mathm;	
 
@@ -47,6 +46,8 @@ namespace mdls
 	
 	typedef CALLBACK_WITH_TWO_ELEM_P ACTIVE_CALLBACK;
 	typedef layer_extended_enum type_layer;
+	
+	class session;
 
 	class layer_w_t
 	{
@@ -55,8 +56,9 @@ namespace mdls
 
 		typedef tensor** tensor_map;
 		typedef tensor* tensor_iter;
-	
+
 		layer();
+		layer(const session& s, tensor* input, tensor* eqiv);
 		layer(ly_type);
 		layer(ly_type, tensor* input);
 		layer(ly_type, tensor* input, tensor* eqiv);
@@ -64,8 +66,6 @@ namespace mdls
 	private:
 		void initialize_tensor();
 		void eqiv_set();
-		
-
 
 	protected:
 
@@ -79,6 +79,8 @@ namespace mdls
 		int* drop_out_index;
 		bool* val_drop_outed;
 
+		bool nodeSet;
+
 		layer* _forward_lay;
 		layer* _backward_lay;
 
@@ -86,6 +88,9 @@ namespace mdls
 
 		tensor* grad_weight_by_input;
 		tensor* grad_input_by_weight;
+		
+		session const* sess;
+
 
 		layer_extended_enum _type;
 
@@ -111,6 +116,8 @@ namespace mdls
 
 		tensor* get_tensor_iter(int i) { return _tensor_map[i]; };
 
+		NodeMap* get_node_map() { return map; };
+
 		tensor* get_input_tensor() { return _tensor_map[0]; };
 		tensor* get_eqiv_tensor() { return _tensor_map[1]; };
 		tensor* get_output_tensor() { return _tensor_map[2]; };
@@ -121,11 +128,11 @@ namespace mdls
 
 
 	protected:
-		layerITF*self;
-
+		ILayer* self;
 	public:
 		void write_in_graph_node_relt(Node** n);
 
+		
 		inline void proceed()
 		{
 			self->proceed();
@@ -134,8 +141,6 @@ namespace mdls
 		{
 			self->proceed_inverse();
 		}
-
-
 
 		inline void set_tensor(Tensor_Index_In_Layer pos, tensor* p)
 		{
@@ -208,30 +213,18 @@ namespace mdls
 		void get_grad_in_case(bool input_or_weight, int input_index, int weight_index, tensor& to_write);
 
 
-		void proceed_node_mode()
+		void proceed_by_nodes()
 		{
-			map->act_all_nodes();
+			if (!nodeSet)
+				self->set_up_nodes();
+
+			map->operate_nodes();
 		}
-		
 
 	};
 
 	void inc_layer_type_count(int* i, std::string s);
 
-
-
-
-}
-
-
+} 
 
 typedef layer_w_t layer;
-
-
-
-
-
-
-
-
-

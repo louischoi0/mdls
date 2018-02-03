@@ -13,14 +13,14 @@ namespace mdls
 		shape lc_shape;
 
 		offset* o_arr;
-		
+
 		target_dm** off_dm;
 		target_dm** init_dm;
 
 		size_t ls[4];
 
 		int* ct_arr;
-
+		
 		shape _s;
 		shape _c;
 
@@ -67,18 +67,18 @@ namespace mdls
 		shape get_orginal_shape(int );
 		void get_counted_shape(int , shape& );
 		void init_count(int i, target_dm d);
-		
-		
+
+
 		inline int get_loop_count() { return loop_count; };
-	
+
 		int get_offset();
 		int get_offset(int i);
-				
+
 		void callback_end() { counting = false; };
 		void set_target(Dm n) {
 			target = n;
 		};
-		
+
 		Dm get_target() {
 			return target;
 		};
@@ -89,7 +89,7 @@ namespace mdls
 		void write_log(int index, int local_index, int val);
 
 		void add_count(int index, int v) { count[index] += v; };
-	
+
 		int* get_log(int i) { return _log_arr[i]; };
 	};
 

@@ -18,17 +18,33 @@ int main()
 	tensor out(1, 2, 4, 4);
 
 	tensor densWeight(1, 1, 1, 8);
-	densWeight.initialize_elem_to(2);
+	tensor densWeight0(1, 1, 1, 8);
 	
-	t0.initialize_elem_to(1);
+	session s = session();
 
-	Dense denseLayer(&t0, &densWeight);
+	tfunc::init_tensor_ladder(t0);
+
+	tfunc::init_tensor_with_random(densWeight,0,1);
+	tfunc::init_tensor_with_random(densWeight0,0,1);
+
+	Dense denseLayer(s , &t0, &densWeight);
+	Dense denseLayer0(s, &densWeight0);
+
+	densWeight.apply_to_all_elem([](elemt* p)->void {
+		*p += 1;
+	});
 	
-	denseLayer.proceed();
-	denseLayer.test();
+	denseLayer.set_up_nodes();
+	denseLayer.proceed_by_nodes();
 
+	s.add_layer(&denseLayer);
+	s.add_layer(&denseLayer0);
+	
+	s.preprocessing();
+	s.run();
 	tfunc::print_object(denseLayer.get_tensor(Output));
-
+	tfunc::print_object(denseLayer0.get_tensor(Output));
+	
 	Node n;
 	n.set_elemtp_by_col(t0.get_p(),0);	
 	n.set_elemtp_by_col(t1.get_p(),1);

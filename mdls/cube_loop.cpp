@@ -1,4 +1,5 @@
 #include "cube_loop.h"
+#include "func_infromer.h"
 
 void mathm::cube_loop(cube* p, elemt* copi, CALLBACK_SINGLE_LOOP_P_2 CC)
 {

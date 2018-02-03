@@ -1,9 +1,22 @@
 #include "layert.h"
+#include "session.h"
 
 using namespace mdls;
 typedef layer_w_t layer;
 const std::vector<string> strMap = { "Input", "Wehgit", "Output", "Grad_in", "Grad_Weight", "Bias" };
 
+layer::layer_w_t(const session& s, tensor* in, tensor* eqiv) :
+	_tensor_map(new tensor*[5]),
+	init(false),
+	sess(&s)
+{
+	set_tensor(Tensor_Index_In_Layer::Input, in);
+	set_tensor(Tensor_Index_In_Layer::Weight, eqiv);
+
+	initialize_tensor();
+	eqiv_set();
+
+}
 layer::layer_w_t() :
 	end_layer(false),
 	start_layer(false),

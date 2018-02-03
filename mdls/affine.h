@@ -7,7 +7,7 @@ using namespace mathm;
 
 namespace mdls
 {
-	class affine : public layer, public layerITF
+	class affine : public layer
 	{
 		
 	private:
@@ -29,7 +29,7 @@ namespace mdls
 
 			
 		};
-
+		virtual void set_up_node() {};
 
 
 		virtual void init_with_cast();

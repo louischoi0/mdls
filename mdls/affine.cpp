@@ -8,8 +8,9 @@ int affine::count = 0;
 
 void affine::init_with_cast()
 {
-	this->self = const_cast<layerITF*>((layerITF*)this);
 }
+
+
 	affine::affine() :
 	layer(layer_extended_enum::AFFINE)
 {
